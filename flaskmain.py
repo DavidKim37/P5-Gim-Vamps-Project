@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 from user import user_create
 from flask_sqlalchemy import SQLAlchemy
-
-
+import json
+import requests
 
 app = Flask(__name__)
 
-''' database setup  '''
+# database setup
 dbURI = 'sqlite:///chess.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = dbURI
@@ -49,6 +49,18 @@ def howtoplay():
 @app.route('/leaderboards')
 def leaderboards():
     return render_template("leaderboards.html")
+
+
+@app.route('/lichesslb', methods=['GET', 'POST'])
+def lichesslb():
+    url = "https://lichess.org/player/top/100/classical/"
+    headers = {
+        'Accept': 'application/vnd.lichess.v3+json'
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json().get('users')
+    print(data)
+    return render_template("webapi2.html", data=data)
 
 if __name__ == "__main__":
     app.run(port='3000', host='127.0.0.1')

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+
+{% block pagecontent %}
+{% set data = data %}
+{% set place = namespace(value=0) %}
+<div class="row justify-content-left" style="margin: 2%;">
+    <h1><strong>Top 100 Chess Players from lichess.com</strong></h1>
+    <form action={{url_for('.lichesslb')}}>
+        <button Class="button2">Refresh</button>
+    </form>
+</div>
+<div class="data" style="height: 35vh;">
+    <table style="margin: 2%">
+        <tr>
+            <th>Place</th>
+            <th>Username</th>
+            <th>Rating</th>
+            <th>Progress</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            {% set place.value = place.value + 1 %}
+            <td>{{place.value}}</td>
+            {% set username = item["username"] %}
+            <td>{{username}}</td>
+            {% set rating = item["perfs"]["classical"]["rating"] %}
+            <td>{{rating}}</td>
+            {% set progress = item["perfs"]["classical"]["progress"] %}
+            <td>{{progress}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<style>
+
+.button2 {
+ background-color: #ffffff;
+  color: black;
+  border: 2px solid #0000ff; /* blue */
+  transition-duration: 0.4s;
+}
+
+.button2:hover {
+  background-color: #0000ff; /* blue */
+  color: white;
+}
+
+strong {
+    font-size: 60px;
+    color: #00008B;
+}
+
+.leaderboard {
+    max-width: 50rem;
+    margin: 5rem auto;
+    border-radius: 1.5rem;
+    box-shadow: 2px 2px 16px 1px #aaa;
+}
+
+header {
+background-color: #008fdb;
+color: white;
+border-top-left-radius: 1.5rem;
+border-top-right-radius: 1.5rem;
+}
+
+tbody {
+background-color: #595959;
+color: white;
+}
+
+table {
+width: 95%;
+border-bottom-left-radius: 1.5rem;
+border-bottom-right-radius: 1.5rem;
+}
+
+thead {
+    font-size: 30px;
+    color: #f9f9f9;
+    text-transform: uppercase;
+}
+
+.user {
+    text-align: left;
+}
+
+.rank,
+.cp,
+.wins {
+    text-align: right
+}
+
+.rank {
+    width: 4ch;
+}
+
+
+th {
+    padding: 0.5rem 1rem;
+}
+
+td {
+    padding: 1rem 1rem;
+}
+
+/*every even row will be the darker color */
+tbody tr:nth-child(2n) {
+    background-color: #4d4d4d;
+}
+
+h1 {
+font-size: 70px;
+padding: 20px;
+}
+</style>
+
+{% endblock %}
